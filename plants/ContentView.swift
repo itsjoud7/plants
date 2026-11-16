@@ -1,17 +1,21 @@
 import SwiftUI
-import Playgrounds
 
 struct ContentView: View {
+
+    @Environment(ReminderStore.self) private var store
+    @AppStorage("hasOnboarded") private var hasOnboarded = false
+
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        if store.reminders.isEmpty && !hasOnboarded {
+            Onboarding_1_View()
+        } else {
+            MainPageView()
+        }
     }
 }
 
 #Preview {
-    ContentView()
-}
-
-#Playground {
-    _ = 1 + 2
+    UserDefaults.standard.set(false, forKey: "hasOnboarded")
+    return ContentView()
+        .environment(ReminderStore())
 }
