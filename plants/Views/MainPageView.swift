@@ -21,6 +21,7 @@ struct MainPageView: View {
 
     var headerText: String {
         if store.completedCount == 0 {
+            // == asks "is it equal?" (a question) | = puts a value (like name = "Monstera")
             return "Your plants are waiting for a sip 💦"
         } else {
             return "\(store.completedCount) of your plants feel loved today✨"
