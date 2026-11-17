@@ -1,3 +1,4 @@
+
 <h1 align="lining">🌱 Planto</h1> 
 
 
@@ -45,5 +46,5 @@ An iOS app that reminds you to water your plants.
 2. Choose an iPhone simulator
 3. Press **⌘R**
 
-
+<img width="1600" height="818" alt="banner" src="https://github.com/user-attachments/assets/4e69bd47-9d96-4884-8c3b-8dbf2256d2f8" />
 
