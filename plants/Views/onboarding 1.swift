@@ -80,7 +80,7 @@ struct Onboarding_1_View: View {
                             Capsule().stroke(.white.opacity(0.25), lineWidth: 1)
                             
                         ) // green color, Capsule = is the button pill shape
-                      
+                        .padding(.bottom, 60)
                     
                    
                 }

@@ -25,7 +25,6 @@ struct SetReminderView: View {
     @State private var watering: WateringFrequency = .everyDay
     @State private var water: WaterAmount = .small
     
-    @State private var showDeleteAlert = false
     // عشان اسأل المستخدم "متأكد؟" قبل ما نحذف، وما تنحذف النبتة بالغلط
     var body: some View {
         // عشان الشريط العلوي (العنوان و ✕ و ✓)
@@ -90,6 +89,19 @@ struct SetReminderView: View {
                         }
                     }
                 }
+
+                Section {
+                    Button(role: .destructive) {
+                        if let reminder = reminderToEdit {
+                            store.delete(reminder)
+                        }
+                        dismiss()
+                    } label: {
+                        Text("Delete Reminder")
+                            .foregroundStyle(.red)
+                            .frame(maxWidth: .infinity)
+                    }
+                }                // Delete button: always shows at the bottom of the form
             }
             .pickerStyle(.menu)
             .tint(.secondary)
@@ -112,7 +124,8 @@ struct SetReminderView: View {
                     } label: {
                         Image(systemName: "checkmark")
                         // the ✓ icon (without Button it's just a picture, not tappable)
-                    }                    .tint(Color.plantGreen)
+                    }
+                    .tint(Color.plantGreen)
                     .disabled(name.isEmpty)
                 }
             }
@@ -125,10 +138,13 @@ struct SetReminderView: View {
                     water = reminder.water
                 }
             }
-            
         }
     }
 
+    // func = a function: a group of steps with one name
+    // Why: instead of writing all the saving steps inside the ✓ button (long and messy),
+    // I put them here and call save() in one line. It keeps the code clean,
+    // easy to understand from the name, and I can reuse it without repeating the steps
     private func save() {  // a function named save, private = only this page can use it
         if var reminder = reminderToEdit {
             reminder.name = name
@@ -149,13 +165,9 @@ struct SetReminderView: View {
             store.add(reminder)   // calls the add function in the store to save a new item there
         }
         hasOnboarded = true
-        dismiss()
         // marks onboarding as finished (saved on the phone) so it never shows again
-        
-    }// func = a function: a group of steps with one name
-    // Why: instead of writing all the saving steps inside the ✓ button (long and messy),
-    // I put them here and call save() in one line. It keeps the code clean,
-    // easy to understand from the name, and I can reuse it without repeating the steps
+        dismiss()
+    }
 }
 
 #Preview("New") {
@@ -163,3 +175,7 @@ struct SetReminderView: View {
         .environment(ReminderStore())
 }
 
+#Preview("Edit") {
+    SetReminderView(reminderToEdit: PlantReminder(name: "Pothos"))
+        .environment(ReminderStore())
+}

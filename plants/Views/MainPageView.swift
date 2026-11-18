@@ -34,7 +34,7 @@ struct MainPageView: View {
             Text("My Plants 🌱")
                 .font(.system(size: 34, weight: .bold))
                 .padding(.horizontal, 20)
-                .padding(.top, 40)
+                .padding(.top, 45)
                 .padding(.bottom, 12)
 
             Divider()
@@ -59,11 +59,11 @@ struct MainPageView: View {
                     .font(.system(size: 24, weight: .semibold))
                     .foregroundStyle(.white)
                     .frame(width: 56, height: 56)
-                    .background(Color.plantGreen, in: Circle())
+                    .glassEffect(.regular.tint(.plantGreen.opacity(0.6)).interactive(), in: .circle)
+                    // glassEffect = green glass circle button
             }
             .padding(24)
         }
-        
         // The green + button: floats on top of the page in the bottom-right corner and opens the add plant sheet + it also shows the sheet
         
         .sheet(isPresented: $showAddSheet) {
@@ -82,11 +82,12 @@ struct MainPageView: View {
                 }
             }
             // destructive = a dangerous action that can't be undone, so iOS shows it in red
-            
+
             Button("Cancel", role: .cancel) { }
         } message: { reminder in
             Text("Are you sure you want to delete \(reminder.name)?")
         }
+        // confirmationDialog = delete options show from the bottom
     }
 
     var emptyView: some View {
@@ -110,16 +111,16 @@ struct MainPageView: View {
                     .scaledToFit()
                     .frame(width: 180, height: 220)
             }
-            .padding(.bottom, 40)
+            .padding(.bottom, 60)
 
             Text("All Done! 🎉")
                 .font(.system(size: 25, weight: .bold))
-                .padding(.bottom, 12)
+                .padding(.bottom, 16)
 
             Text("All Reminders Completed")
                 .font(.system(size: 16))
                 .foregroundStyle(.secondary)
-
+                .padding(.bottom, 16)
             Spacer()
         }
         .frame(maxWidth: .infinity)
