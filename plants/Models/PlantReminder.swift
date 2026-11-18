@@ -6,8 +6,11 @@
 //
 
 import Foundation
-
+// Apple's basic tools (UUID, Codable, saving) — no screens needed here, so not SwiftUI
 enum Room: String, CaseIterable, Codable, Identifiable {
+    //case: lets us get all the options at once (for the Picker)
+    //codeable: lets it be saved on the phone
+    //id:  gives each item its own id, so the app knows which one is which
     case bedroom = "Bedroom"
     case livingRoom = "Living Room"
     case kitchen = "Kitchen"
@@ -15,6 +18,8 @@ enum Room: String, CaseIterable, Codable, Identifiable {
     case bathroom = "Bathroom"
 
     var id: String { rawValue }
+    // rawValue = the name the user sees ("Living Room"), not the code name (livingRoom)
+    // Without it, Text can't show the option because it needs text
 }
 
 enum Light: String, CaseIterable, Codable, Identifiable {

@@ -73,11 +73,14 @@ struct Onboarding_1_View: View {
                         .font(.system(size: 17, weight: .medium))
                         .foregroundStyle(.white)
                         .frame(width: 280, height: 44)
-                        .background(Color.plantGreen, in: Capsule())
+                        .glassEffect(.regular.tint(.plantGreen.opacity(0.6)).interactive(), in: .capsule)
                     // background = put something BEHIND the text
+                    
                         .overlay(
                             Capsule().stroke(.white.opacity(0.25), lineWidth: 1)
+                            
                         ) // green color, Capsule = is the button pill shape
+                      
                     
                    
                 }

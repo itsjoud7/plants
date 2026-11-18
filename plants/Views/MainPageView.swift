@@ -48,6 +48,9 @@ struct MainPageView: View {
                 reminderList
             }
         }
+        // Shows one of 3 screens: no plants → empty message, all watered → All Done, otherwise → the plant list
+        
+        
         .overlay(alignment: .bottomTrailing) {
             Button {
                 showAddSheet = true
@@ -60,18 +63,26 @@ struct MainPageView: View {
             }
             .padding(24)
         }
+        
+        // The green + button: floats on top of the page in the bottom-right corner and opens the add plant sheet + it also shows the sheet
+        
         .sheet(isPresented: $showAddSheet) {
             SetReminderView()
         }
         .sheet(item: $reminderToEdit) { reminder in
             SetReminderView(reminderToEdit: reminder)
         }
+        
+        // Opens the edit page with the tapped plant, named "reminder" so we can send it to the page
+        
         .alert("Delete Plant?", isPresented: $showDeleteAlert, presenting: reminderToDelete) { reminder in
             Button("Delete", role: .destructive) {
                 withAnimation {
                     store.delete(reminder)
                 }
             }
+            // destructive = a dangerous action that can't be undone, so iOS shows it in red
+            
             Button("Cancel", role: .cancel) { }
         } message: { reminder in
             Text("Are you sure you want to delete \(reminder.name)?")
@@ -128,17 +139,17 @@ struct MainPageView: View {
             .padding(.horizontal, 32)
             .padding(.vertical, 28)
 
-            List {
-                ForEach(store.reminders) { reminder in
-                    ReminderRow(reminder: reminder)
-                        .contentShape(Rectangle())
-                        .onTapGesture {
+            List {                                          // a scrollable list
+                ForEach(store.reminders) { reminder in      // one row for every plant
+                    ReminderRow(reminder: reminder)         // the row design for this plant
+                        .contentShape(Rectangle())          // makes the whole row tappable
+                        .onTapGesture {                     // tap a row → open the edit page
                             reminderToEdit = reminder
                         }
-                        .swipeActions(allowsFullSwipe: false) {
+                        .swipeActions(allowsFullSwipe: false) {   // swipe left → show a delete button (no instant delete)
                             Button {
-                                reminderToDelete = reminder
-                                showDeleteAlert = true
+                                reminderToDelete = reminder       // remember which plant
+                                showDeleteAlert = true            // ask "Are you sure?"
                             } label: {
                                 Image(systemName: "trash")
                             }
@@ -146,15 +157,18 @@ struct MainPageView: View {
                         }
                 }
             }
-            .listStyle(.plain)
+            .listStyle(.plain)                              // simple list style, no grey boxes
         }
     }
 }
 
 struct ReminderRow: View {
-
+    // Instead of writing the row design for every plant,i write it once as ReminderRow,
+    // and ForEach repeats it for each plant in the list
     @Environment(ReminderStore.self) private var store
+    
     @Environment(\.colorScheme) private var colorScheme
+    // takes the phone's mode (light or dark) that Apple provides, to pick the tag colors
     let reminder: PlantReminder
 
     var lightTagColor: Color {
@@ -222,7 +236,7 @@ struct TagView: View {
             .background(Color.gray.opacity(0.2), in: RoundedRectangle(cornerRadius: 8))
     }
 }
-
+// Previews (Xcode only): a test store with test plants to see each state of the main page
 #Preview("Plants") {
     let store = ReminderStore()
     store.reminders = [
